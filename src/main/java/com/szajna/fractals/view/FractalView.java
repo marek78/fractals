@@ -27,7 +27,7 @@ public class FractalView extends JPanel {
 		GRADIENT3,
 		HSB,
 		GRAYSCALE,
-		VIOLET_SCHADES,
+		VIOLET_SHADES,
 		//CUSTOM,
 	};
 	
@@ -221,7 +221,7 @@ public class FractalView extends JPanel {
 			return Toolbox.getColor(lumInt, lumInt, lumInt);
 		}
 		
-		case VIOLET_SCHADES: {
+		case VIOLET_SHADES: {
 			float lumQuadrat = lum * lum;
 			int lumInt = (int)(lum * 255.0f);
 			int lumQuadratInt = (int)(lumQuadrat * 255.0f);

@@ -164,7 +164,7 @@ public class MenuControler implements ActionListener, ItemListener {
 			view.repaint();
 		} else if (cmd.equals(MainWindow.ACTION_CMD_MENU_COLOR_THEME_VIOLET_SCHADES)) {
 			
-			view.setColorTheme(ColorTheme.VIOLET_SCHADES);
+			view.setColorTheme(ColorTheme.VIOLET_SHADES);
 			view.repaint();
 		}
 	}
