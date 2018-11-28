@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JPanel;
 
@@ -179,10 +180,14 @@ public class FractalView extends JPanel {
         long drawStartTime = System.currentTimeMillis();
         if (canvasDirty) {
             
+            DataBufferInt dataBuffer = (DataBufferInt)canvas.getRaster().getDataBuffer();
+            int data[] = dataBuffer.getData();
+            int width = canvas.getWidth();
+
             // build the canvas from fractal data
             for (int x = 0; x < fractalData.length; ++x) {
                 for (int y = 0; y < fractalData[x].length; ++y) {
-                    canvas.setRGB(x, y, getColor(fractalData[x][y], iterationsCount));
+                    data[y * width + x] = getColor(fractalData[x][y], iterationsCount);
                 }
             }
             canvasDirty = false;
