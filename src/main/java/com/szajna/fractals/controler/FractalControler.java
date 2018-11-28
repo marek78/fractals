@@ -16,11 +16,13 @@ import javax.swing.event.ChangeListener;
 
 import com.szajna.fractals.model.FractalModel;
 import com.szajna.fractals.view.FractalView;
+import com.szajna.util.Log;
 
 public class FractalControler 
 	implements MouseListener, MouseMotionListener, MouseWheelListener, 
 	ComponentListener, ChangeListener {
 
+    private static final String LOG_TAG = FractalControler.class.getSimpleName();
 	private static final int ZOOM_RECTANGLE_DIAGONAL_MIN_SIZE = 10;	// pixels
 	private static final double DEFAULT_ZOOM_FACTOR = 1.5;
 	
@@ -112,7 +114,7 @@ public class FractalControler
 						zoomRectWidth / (double)width, 
 						zoomRectHeight / (double)height);
 				
-				//System.out.println("zoomFactor: " + zoomFactor);
+				Log.v(LOG_TAG, "zoomFactor: " + zoomFactor);
 				zoom(zoomFactor);
 			}
 
@@ -142,7 +144,7 @@ public class FractalControler
 		
 		width = e.getComponent().getWidth();
 		height = e.getComponent().getHeight();
-		System.out.println("componentResized: " + width + ", " + height);
+		Log.d(LOG_TAG, "componentResized: " + width + ", " + height);
 		
 		if (model.getWidth() != width || model.getHeight() != height) {
 			
@@ -228,7 +230,7 @@ public class FractalControler
 					view.setZoomRectangle(new Rectangle());
 					view.setFractalData(model.getFractalData(), model.getIterationsCount());
 					view.repaint();
-					//System.out.println(slider.getValue());
+					Log.v(LOG_TAG, "" + slider.getValue());
 		    	}
 		    }
 		}

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import com.szajna.fractals.model.Gradient;
 import com.szajna.fractals.model.GradientColor;
+import com.szajna.util.Log;
 import com.szajna.util.Toolbox;
 
 public class FractalView extends JPanel {
@@ -30,6 +31,7 @@ public class FractalView extends JPanel {
 		//CUSTOM,
 	};
 	
+	private static final String LOG_TAG = FractalView.class.getSimpleName();
 	private static final long serialVersionUID = 1L;
 	
 	private BufferedImage canvas;
@@ -147,7 +149,7 @@ public class FractalView extends JPanel {
 
 		g2d.setBackground(Color.BLACK);
 		g2d.clearRect(0, 0, getWidth(), getHeight());
-		//System.out.println("paint: " + getWidth() + ", " + getHeight());
+		Log.v(LOG_TAG, "paint: " + getWidth() + ", " + getHeight());
 		
 		g2d.translate(-offsetX, -offsetY);
 		drawMandlebrot(g2d);
@@ -175,7 +177,7 @@ public class FractalView extends JPanel {
 		if (canvas == null)
 			return;
 		
-		//long drawStartTime = System.currentTimeMillis();
+		long drawStartTime = System.currentTimeMillis();
 		if (canvasDirty) {
 			
 			// build the canvas from fractal data
@@ -188,7 +190,7 @@ public class FractalView extends JPanel {
 		}
 		
 		g2d.drawImage(canvas, null, 0, 0);
-		//System.out.println("Drawing time: " + (System.currentTimeMillis() - drawStartTime) + "ms");
+		Log.v(LOG_TAG, "Drawing time: " + (System.currentTimeMillis() - drawStartTime) + "ms");
 	}
 
 	private int getColor(float value1, int value2) {

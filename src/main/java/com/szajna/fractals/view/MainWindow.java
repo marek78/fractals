@@ -17,6 +17,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSlider;
 import javax.swing.KeyStroke;
+import javax.swing.border.EmptyBorder;
 
 import com.szajna.fractals.controler.FractalControler;
 import com.szajna.fractals.controler.MenuControler;
@@ -200,9 +201,10 @@ public class MainWindow extends JFrame {
 	    iterationsSlider.addChangeListener(fractalControler);
 	    iterationsSlider.setVisible(true);
 	    iterationsSlider.setName(COMPONENT_ITERATIONS_SLIDER);
-	    
-	    this.getContentPane().add(iterationsSlider, BorderLayout.EAST, 1);
+	    iterationsSlider.setBorder(new EmptyBorder(10, 10, 10, 10));
 
+	    this.getContentPane().add(iterationsSlider, BorderLayout.EAST, -1);
+	    
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.pack();
 	    this.setLocation(100, 100);

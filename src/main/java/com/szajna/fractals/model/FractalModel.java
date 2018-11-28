@@ -1,8 +1,12 @@
 package com.szajna.fractals.model;
 
+import com.szajna.util.Log;
+
 public class FractalModel {
 	
-	public static final int ITERATIONS_COUNT_MIN = 100;
+    private static final String LOG_TAG = FractalModel.class.getSimpleName();
+
+    public static final int ITERATIONS_COUNT_MIN = 100;
 	public static final int ITERATIONS_COUNT_MAX = 600;
 	public static final int ITERATIONS_COUNT_DEFAULT = 300;
 	
@@ -66,7 +70,7 @@ public class FractalModel {
 		
 		// single thread implementation
 		// calculate(0, width);
-		//System.out.println("cneter " + minCx + ", " + minCy);
+	    Log.v(LOG_TAG, "cneter: " + centerCx + ", " + centerCy);
 
 		// multi threaded alternative
 		Thread [] threads = new Thread[THREADS_COUNT];

@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 import com.szajna.fractals.App;
+import com.szajna.util.Log;
 import com.szajna.util.Filesystem;
 
 public class SaveOptionsModel {
@@ -34,6 +35,7 @@ public class SaveOptionsModel {
 		}
 	}
 
+	private static final String LOG_TAG = SaveOptionsModel.class.getSimpleName();
 	private static final String RESOLUTION_TYPE_KEY   = "resolutionType: ";
 	private static final String CUSTOM_RESOLUTION_KEY = "customResolution: ";
 	
@@ -131,7 +133,8 @@ public class SaveOptionsModel {
 			}
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		    Log.d(LOG_TAG, "No configuration file at: " + file.getAbsolutePath());
+		    Log.d(LOG_TAG, "Default config will be used");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
