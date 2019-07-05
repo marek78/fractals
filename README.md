@@ -1,7 +1,6 @@
 fractals
 ========
-
-simple java/swing mandelbrot set visualization
+java/swing project which renders Mandelbrot fractal
 
 ### Building:
 #### with eclipse
