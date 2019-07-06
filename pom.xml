@@ -4,7 +4,7 @@
 
   <groupId>com.szajna.fractals</groupId>
   <artifactId>fractals</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>fractals</name>
@@ -28,13 +28,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.0</version>
         <configuration>
           <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>./lib/</classpathPrefix>
+       	    <manifest>
+              <!--<addClasspath>true</addClasspath>-->
+              <!--<classpathPrefix>./lib/</classpathPrefix>-->
               <mainClass>com.szajna.fractals.App</mainClass>
             </manifest>
+	    <manifestEntries>
+	      <Class-Path>lib/jocl-2.0.0.jar</Class-Path>
+	    </manifestEntries>
           </archive>
         </configuration>
       </plugin>
@@ -70,8 +74,43 @@
         </configuration>
       </plugin>
     </plugins>
+    <pluginManagement>
+	<plugins>
+    <!-- Ignore/Execute plugin execution -->
+    <plugin>
+        <groupId>org.eclipse.m2e</groupId>
+        <artifactId>lifecycle-mapping</artifactId>
+        <version>1.0.0</version>
+        <configuration>
+            <lifecycleMappingMetadata>
+                <pluginExecutions>
+                    <!-- copy-dependency plugin -->
+                    <pluginExecution>
+                        <pluginExecutionFilter>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-dependency-plugin</artifactId>
+                            <versionRange>[1.0.0,)</versionRange>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                        </pluginExecutionFilter>
+                        <action>
+                            <ignore />
+                        </action>
+                    </pluginExecution>
+                </pluginExecutions>
+            </lifecycleMappingMetadata>
+        </configuration>
+    </plugin>
+   	</plugins>
+   	</pluginManagement>
   </build>
-
+  
   <dependencies>
+	<dependency>
+		<groupId>org.jocl</groupId>
+		<artifactId>jocl</artifactId>
+		<version>2.0.0</version>
+	</dependency>
   </dependencies>
 </project>

@@ -8,6 +8,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
@@ -17,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.filechooser.FileFilter;
 
+import com.szajna.fractals.AppConfig;
 import com.szajna.fractals.model.FractalModel;
 import com.szajna.fractals.model.HelpModel;
 import com.szajna.fractals.model.Resolution;
@@ -39,6 +43,7 @@ public class MenuControler implements ActionListener, ItemListener {
     private JFrame frame;
     private SaveOptionsControler saveOptionsControler;
     private HelpControler helpControler;
+    private DateFormat fileNameDateFormat;
     
     public MenuControler(FractalModel fractalModel, FractalView fractalView, JFrame frame) {
         
@@ -55,6 +60,7 @@ public class MenuControler implements ActionListener, ItemListener {
         HelpDialog helpDialogView = new HelpDialog(frame, "Help", true);
         HelpModel helpModel = new HelpModel();
         this.helpControler = new HelpControler(helpModel, helpDialogView);
+        this.fileNameDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
     }
     
     @Override
@@ -73,9 +79,13 @@ public class MenuControler implements ActionListener, ItemListener {
                     model.calculate();
                     view.setFractalData(model.getFractalData(), model.getIterationsCount());
                     
-                    if (! menuItem.isSelected())
+                    if (! menuItem.isSelected()) {
                         view.requestFocus();
+                    }
                 }
+            } else if (menuItem.getActionCommand().equals(MainWindow.ACTION_CMD_MENU_ITERATIONS_USE_OPEN_CL)) {
+
+                model.setOpenClEnabled(menuItem.isSelected());
             }
         }
     }
@@ -97,7 +107,8 @@ public class MenuControler implements ActionListener, ItemListener {
             FileFilter filter = new ExtFileFilter(IMAGE_FILES_EXT_DESCRIPTION, IMAGE_FILE_EXTENSIONS);
             fileChooser.resetChoosableFileFilters();
             fileChooser.addChoosableFileFilter(filter);
-            fileChooser.setSelectedFile(new File("fractal.png"));
+            String filename = "fractal_" + fileNameDateFormat.format(new Date()) + ".png";
+            fileChooser.setSelectedFile(new File(filename));
             
             int result = fileChooser.showSaveDialog(frame);
             if (result == JFileChooser.APPROVE_OPTION) {
@@ -144,26 +155,37 @@ public class MenuControler implements ActionListener, ItemListener {
             
         } else if (cmd.equals(MainWindow.ACTION_CMD_MENU_COLOR_THEME_GRADIENT1)) {
 
+            AppConfig.getInstance().setIntProperty(AppConfig.PROP_KEY_COLOR_THEME, ColorTheme.GRADIENT1.value);
             view.setColorTheme(ColorTheme.GRADIENT1);
             view.repaint();
+            
         } else if (cmd.equals(MainWindow.ACTION_CMD_MENU_COLOR_THEME_GRADIENT2)) {
 
+            AppConfig.getInstance().setIntProperty(AppConfig.PROP_KEY_COLOR_THEME, ColorTheme.GRADIENT2.value);
             view.setColorTheme(ColorTheme.GRADIENT2);
             view.repaint();
+            
         } else if (cmd.equals(MainWindow.ACTION_CMD_MENU_COLOR_THEME_GRADIENT3)) {
 
+            AppConfig.getInstance().setIntProperty(AppConfig.PROP_KEY_COLOR_THEME, ColorTheme.GRADIENT3.value);
             view.setColorTheme(ColorTheme.GRADIENT3);
             view.repaint();
+            
         } else if (cmd.equals(MainWindow.ACTION_CMD_MENU_COLOR_THEME_HSB)) {
             
+            AppConfig.getInstance().setIntProperty(AppConfig.PROP_KEY_COLOR_THEME, ColorTheme.HSB.value);
             view.setColorTheme(ColorTheme.HSB);
             view.repaint();
+            
         } else if (cmd.equals(MainWindow.ACTION_CMD_MENU_COLOR_THEME_GRAYSCALE)) {
             
+            AppConfig.getInstance().setIntProperty(AppConfig.PROP_KEY_COLOR_THEME, ColorTheme.GRAYSCALE.value);
             view.setColorTheme(ColorTheme.GRAYSCALE);
             view.repaint();
+            
         } else if (cmd.equals(MainWindow.ACTION_CMD_MENU_COLOR_THEME_VIOLET_SCHADES)) {
             
+            AppConfig.getInstance().setIntProperty(AppConfig.PROP_KEY_COLOR_THEME, ColorTheme.VIOLET_SHADES.value);
             view.setColorTheme(ColorTheme.VIOLET_SHADES);
             view.repaint();
         }

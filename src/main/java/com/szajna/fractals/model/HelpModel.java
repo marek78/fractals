@@ -9,17 +9,34 @@ public class HelpModel {
     
     public String getText() {
         return "<HTML>" +
+                
                 "<div align=\"center\">" +
                 "<H2>" + App.APP_NAME_SPACED + "</H2>" +
                 "<H4>version " + App.APP_VERSION + "</H4>" +
-                "<H4>Controls:</H4>" +
                 "</div>" +
-                "<ul>" +
-                "<li>Panning - move the mouse with left button clicked &nbsp;&nbsp;</li>" +
-                "<li>Zooming - move the mouse with right button clicked &nbsp;&nbsp;</li>" +
-                "<li>Alternative zooming - use mouse scroll wheel &nbsp;&nbsp;</li>" +
-                "<li>Reset view - click center mouse button &nbsp;&nbsp;</li>" +
-                "</ul>" + 
+                
+                "<div align=\"left\">" +
+                "<pre>" +
+                "    Mouse controls:    <br>" +
+                "    Panning - move the mouse with left button pressed    <br>" +
+                "    Zooming - move the mouse with right button pressed    <br>" +
+                "    Zooming (alternative) - use mouse scroll wheel    <br>" +
+                "    Reset view - click center mouse button    <br>" +
+                "<br>" +
+                "</pre>" +
+                "</div>" +
+                
+                "<div align=\"left\">" +
+                "<pre>" +
+                "    Keyboard controls:    <br>" +
+                "    Panning: left, right, up, down arrow keys    <br>" +
+                "    Zooming (at screen  center): 'G' zoom in, 'H' zoom out    <br>" +
+                "    Zooming (at mouse position): 'Q' or ',' zoom in, 'W' or '.' zoom out    <br>" +
+                "    Reset view - 'F1' or 'Home' key    <br>" +
+                "<br>" +
+                "</pre>" +
+                "</div>" +
+                
                 "</HTML>";
     }
 }

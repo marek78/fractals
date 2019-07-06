@@ -18,17 +18,45 @@ import com.szajna.util.Toolbox;
 
 public class FractalView extends JPanel {
     
-    private static final int PREFERRED_WIDTH = 1024;
-    private static final int PREFERRED_HEIGHT = 768;
+    private static final int PREFERRED_WIDTH = 1280;
+    private static final int PREFERRED_HEIGHT = 800;
     
     public enum ColorTheme {
         
-        GRADIENT1,
-        GRADIENT2,
-        GRADIENT3,
-        HSB,
-        GRAYSCALE,
-        VIOLET_SHADES,
+        GRADIENT1(1),
+        GRADIENT2(2),
+        GRADIENT3(3),
+        HSB(4),
+        GRAYSCALE(5),
+        VIOLET_SHADES(6);
+
+        public static final int MIN_VALUE = 1;
+        public static final int MAX_VALUE = 6;
+        public final int value;
+        
+        private ColorTheme(final int newValue) {
+            value = newValue;
+        }
+        
+        public static ColorTheme fromInt(int theme) {
+
+            switch (theme) {
+            case 1:
+                return GRADIENT1;
+            case 2:
+                return GRADIENT2;
+            case 3:
+                return GRADIENT3;
+            case 4:
+                return HSB;
+            case 5:
+                return GRAYSCALE;
+            case 6:
+                return VIOLET_SHADES;
+            default:
+                throw new IllegalArgumentException("ColorTheme " + theme + " out of range.");
+            }
+        }
     };
     
     private static final String LOG_TAG = FractalView.class.getSimpleName();
@@ -87,6 +115,8 @@ public class FractalView extends JPanel {
         this.gradientRedOrangeBlue.addColor(new GradientColor(0.19f,  0.27f, 0.52f, 1.0f));
 
         this.setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));
+        this.setFocusable(true);
+        this.requestFocusInWindow();
     }
     
     public BufferedImage getCanvas() {
@@ -134,6 +164,10 @@ public class FractalView extends JPanel {
     
     public void setZoomRectangle(Rectangle rect) {
         zoomRectangle = rect;
+    }
+    
+    public ColorTheme getColorTheme() {
+        return colorTheme;
     }
     
     public void setColorTheme(ColorTheme colorTheme) {
@@ -209,10 +243,10 @@ public class FractalView extends JPanel {
 
         default:
         case GRADIENT1:
-            return gradientGreenTanOrangeKhaki.getColorAtPosition(lum);
+            return gradientGreenBeigeRedBeige.getColorAtPosition(lum);          
 
         case GRADIENT2:
-            return gradientGreenBeigeRedBeige.getColorAtPosition(lum);          
+            return gradientGreenTanOrangeKhaki.getColorAtPosition(lum);
 
         case GRADIENT3:
             return gradientRedOrangeBlue.getColorAtPosition(lum);

@@ -9,7 +9,7 @@ public class App {
     
     public static final String APP_NAME         = "Fractals";
     public static final String APP_NAME_SPACED  = App.getSpacedAppName();
-    public static final String APP_VERSION      = "1.0";
+    public static final String APP_VERSION      = "1.1.0";
     
     public static final String APP_CONFIG_DIR   = ".fractals";
     public static final String APP_CONFIG_FILE  = "fractals.cfg";

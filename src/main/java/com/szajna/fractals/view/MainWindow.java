@@ -3,6 +3,8 @@ package com.szajna.fractals.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
@@ -15,10 +17,12 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
+import com.szajna.fractals.AppConfig;
 import com.szajna.fractals.controler.FractalControler;
 import com.szajna.fractals.controler.MenuControler;
 import com.szajna.fractals.model.FractalModel;
@@ -56,8 +60,13 @@ public class MainWindow extends JFrame {
     public static final String ACTION_CMD_MENU_COLOR_THEME_VIOLET_SCHADES   = "MenuColor.ThemeVioletSchades";
     
     public static final String ACTION_CMD_MENU_ITERATIONS_ITERATIONS_PANEL  = "MenuIterations.IterationsPanel";
+    public static final String ACTION_CMD_MENU_ITERATIONS_USE_OPEN_CL       = "MenuIterations.UseOpenCL";
+
     public static final String COMPONENT_ITERATIONS_SLIDER                  = "Main.IterationsSlider";
     public static final String ACTION_CMD_MENU_HELP_HELP                    = "MenuHelp.Help";
+
+    private boolean componentFirstAppear = true;
+    private Object mutex = new Object();
 
     
     private enum MenuItemType {
@@ -71,6 +80,11 @@ public class MainWindow extends JFrame {
     
     private void createUi(String appName) {
         
+        synchronized (mutex) {
+            // read application configuration
+            AppConfig.getInstance().readFromFile();
+        }
+
         final FractalModel fractalModel = new FractalModel();
         final FractalView fractalView = new FractalView(ColorTheme.GRADIENT1);
         final FractalControler fractalControler = new FractalControler(fractalModel, fractalView);
@@ -88,6 +102,7 @@ public class MainWindow extends JFrame {
         fractalView.addMouseListener(fractalControler);
         fractalView.addMouseMotionListener(fractalControler);
         fractalView.addMouseWheelListener(fractalControler);
+        fractalView.addKeyListener(fractalControler);
         fractalView.addComponentListener(fractalControler);
         
         this.getContentPane().add(fractalView);
@@ -124,53 +139,84 @@ public class MainWindow extends JFrame {
         menu.getAccessibleContext().setAccessibleDescription("MenuColor");
 
         ButtonGroup group = new ButtonGroup();
-        menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme Green-Tan-Orange-Khaki", 
+        menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme Green-Beige-Red-Beige", 
                 ACCEL_KEYSTROKE_THEME_THEME_GRADIENT1, ACTION_CMD_MENU_COLOR_THEME_GRADIENT1, 
                 menuControler, menuControler);
-        menuItem.setSelected(true);
         group.add(menuItem);
         menu.add(menuItem);
+        if (fractalView.getColorTheme() == ColorTheme.GRADIENT1) {
+            menuItem.setSelected(true);
+        }
         
-        menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme Green-Beige-Red-Beige", 
+        menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme Green-Tan-Orange-Khaki", 
                 ACCEL_KEYSTROKE_THEME_THEME_GRADIENT2, ACTION_CMD_MENU_COLOR_THEME_GRADIENT2, 
                 menuControler, menuControler);
         group.add(menuItem);
         menu.add(menuItem);
+        if (fractalView.getColorTheme() == ColorTheme.GRADIENT2) {
+            menuItem.setSelected(true);
+        }
         
         menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme Red-Orange-Blue", 
                 ACCEL_KEYSTROKE_THEME_THEME_GRADIENT3, ACTION_CMD_MENU_COLOR_THEME_GRADIENT3, 
                 menuControler, menuControler);
         group.add(menuItem);
         menu.add(menuItem);
+        if (fractalView.getColorTheme() == ColorTheme.GRADIENT3) {
+            menuItem.setSelected(true);
+        }
 
         menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme HSB", 
                 ACCEL_KEYSTROKE_THEME_HSB, ACTION_CMD_MENU_COLOR_THEME_HSB, 
                 menuControler, menuControler);
         group.add(menuItem);
         menu.add(menuItem);
+        if (fractalView.getColorTheme() == ColorTheme.HSB) {
+            menuItem.setSelected(true);
+        }
 
         menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme Grayscale", 
                 ACCEL_KEYSTROKE_THEME_GRAYSCALE, ACTION_CMD_MENU_COLOR_THEME_GRAYSCALE, 
                 menuControler, menuControler);
         group.add(menuItem);
         menu.add(menuItem);
+        if (fractalView.getColorTheme() == ColorTheme.GRAYSCALE) {
+            menuItem.setSelected(true);
+        }
 
         menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Theme Violet Shades", 
                 ACCEL_KEYSTROKE_THEME_VIOLET_SCHADES, ACTION_CMD_MENU_COLOR_THEME_VIOLET_SCHADES, 
                 menuControler, menuControler);
         group.add(menuItem);
         menu.add(menuItem);
+        if (fractalView.getColorTheme() == ColorTheme.VIOLET_SHADES) {
+            menuItem.setSelected(true);
+        }
         menuBar.add(menu);
 
-        // menu iterations
-        menu = new JMenu("Iterations");
+        // menu calculation
+        menu = new JMenu("Calculation");
         menu.setMnemonic(MNEMONIC_MENU_ITERATIONS);
-        menu.getAccessibleContext().setAccessibleDescription("MenuItarations");
+        menu.getAccessibleContext().setAccessibleDescription("MenuCalculation");
 
         menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Iterations panel", 
                 ACCEL_KEYSTROKE_ITERATIONS_PANEL, ACTION_CMD_MENU_ITERATIONS_ITERATIONS_PANEL, 
                 menuControler, menuControler);
         menuItem.setSelected(true);
+        menu.add(menuItem);
+
+        menuItem = MainWindow.createMenuItem(MenuItemType.TYPE_CHECKBOX, "Use OpenCL", 
+                null, ACTION_CMD_MENU_ITERATIONS_USE_OPEN_CL, 
+                menuControler, menuControler);
+
+        if (fractalModel.isOpenClSupported()) {
+            menuItem.setEnabled(true);
+            menuItem.setSelected(fractalModel.isOpenClEnabled());
+            
+        } else {
+            menuItem.setEnabled(false);
+            menuItem.setSelected(false);
+        }
         menu.add(menuItem);
         menuBar.add(menu);
         
@@ -184,14 +230,14 @@ public class MainWindow extends JFrame {
                 menuControler, menuControler);
         menu.add(menuItem);
         menuBar.add(menu);
-        
+
         this.setJMenuBar(menuBar);
 
         JSlider iterationsSlider = new JSlider(
                 JSlider.VERTICAL, 
                 FractalModel.ITERATIONS_COUNT_MIN, 
-                FractalModel.ITERATIONS_COUNT_MAX, 
-                FractalModel.ITERATIONS_COUNT_DEFAULT);
+                FractalModel.ITERATIONS_COUNT_MAX,
+                fractalModel.getIterationsCount());
         
         iterationsSlider.setMajorTickSpacing(50);
         iterationsSlider.setMinorTickSpacing(10);
@@ -205,12 +251,55 @@ public class MainWindow extends JFrame {
 
         this.getContentPane().add(iterationsSlider, BorderLayout.EAST, -1);
         
+        this.addComponentListener(new ComponentListener() {
+            
+            @Override
+            public void componentShown(ComponentEvent e) {
+                
+                if (componentFirstAppear && ! fractalModel.isOpenClSupported()) {
+                    showOpenClNotInitialized();
+                }
+                componentFirstAppear = false; 
+            }
+            
+            @Override
+            public void componentResized(ComponentEvent e) {
+            }
+            
+            @Override
+            public void componentMoved(ComponentEvent e) {
+            }
+            
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
+        });
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
         this.setLocation(100, 100);
         this.setMinimumSize(new Dimension(100, 100));
         // center on screen
         this.setLocationRelativeTo(null);
+        this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                
+                synchronized (mutex) {
+                    // write application configuration
+                    AppConfig.getInstance().writeToFile();
+                }
+            }
+        });
+    }
+    
+    private void showOpenClNotInitialized() {
+        
+        String text = "OpenCL not initialized / no OpenCL device found.\n"
+                + "Hardware accelerated computing not available.\n";
+        JOptionPane.showMessageDialog(null, text, "Fractals", JOptionPane.WARNING_MESSAGE);
     }
     
     private static JMenuItem createMenuItem(MenuItemType type, String text, 
