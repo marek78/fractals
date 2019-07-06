@@ -1,7 +1,9 @@
 fractals
 ========
+<pre>
 java/swing project which renders Mandelbrot fractal
 for calculation boost uses OpenCL device if available
+</pre>
 
 Features:
  - scrolling and zooming in Mandelbrot fractal
