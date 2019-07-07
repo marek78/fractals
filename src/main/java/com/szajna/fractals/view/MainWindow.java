@@ -299,7 +299,7 @@ public class MainWindow extends JFrame {
         
         String text = "OpenCL not initialized / no OpenCL device found.\n"
                 + "Hardware accelerated computing not available.\n";
-        JOptionPane.showMessageDialog(null, text, "Fractals", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, text, "Fractals", JOptionPane.INFORMATION_MESSAGE);
     }
     
     private static JMenuItem createMenuItem(MenuItemType type, String text, 

@@ -43,7 +43,7 @@ public class FractalModel {
 
     public static final int ITERATIONS_COUNT_MIN = 100;
     public static final int ITERATIONS_COUNT_MAX = 1200;
-    public static final int ITERATIONS_COUNT_DEFAULT = 600;
+    public static final int ITERATIONS_COUNT_DEFAULT = 300;
     
     private final static int THREADS_COUNT = 8;
     private final static double MAX_BETRAG_QUADRAT = 16.0;
