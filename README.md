@@ -22,3 +22,8 @@ Browse to the downloaded sources, click OK and finish.
 <pre>
 mvn clean package
 </pre>
+
+### Running:
+<pre>
+java -jar target/fractals*
+</pre>
