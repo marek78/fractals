@@ -28,7 +28,7 @@ mvn clean package
 
 ### Running:
 <pre>
-java -jar target/fractals*
+java -jar target/fractals-1.1.0-SNAPSHOT.jar
 </pre>
 
 ### Some snapshots:
