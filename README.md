@@ -1,5 +1,8 @@
+![](src/main/resources/icon.png?raw=true)
+
 fractals
 ========
+
 java/swing project which renders Mandelbrot fractal <br>
 for calculation boost uses OpenCL device if available <br>
 
@@ -27,3 +30,13 @@ mvn clean package
 <pre>
 java -jar target/fractals*
 </pre>
+
+### Some snapshots:
+![](snapshots/fractal_20190706_223110.jpg?raw=true)
+=
+![](snapshots/fractal_20190706_223115.jpg?raw=true)
+=
+![](snapshots/fractal_20190706_223205.jpg?raw=true)
+=
+![](snapshots/fractal_20190706_223329.jpg?raw=true)
+=
